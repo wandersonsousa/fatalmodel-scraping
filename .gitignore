@@ -36,4 +36,5 @@ yarn-error.log*
 .vscode/settings.json
 
 storage
-PLANILHAS
+PLANILHAS/*
+!PLANILHAS/.gitkeep 
