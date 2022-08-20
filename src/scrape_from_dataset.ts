@@ -9,6 +9,7 @@ import {
   PuppeteerCrawler,
   RequestList,
 } from 'crawlee'
+import { writeFileSync } from 'fs'
 import { parse } from 'json2csv'
 
 const _ = require('lodash')
@@ -74,7 +75,7 @@ async function Apify() {
         sexo: contact?.profile?.sex?.description || '',
       }
 
-      dataset.pushData(filtered_data)
+      await dataset.pushData(filtered_data)
     },
 
     // This function is called if the page processing failed more than maxRequestRetries+1 times.
@@ -85,6 +86,10 @@ async function Apify() {
 
   // Run the crawler and wait for it to finish.
   await crawler.run()
+
+  const crowlerResult = await (await dataset.getData()).items
+  const csv = parse(crowlerResult)
+  writeFileSync('PLANILHAS/' + Math.random() + 'fatalmodel_usuarios.csv', csv)
 
   log.debug('Crawler finished.')
 }
