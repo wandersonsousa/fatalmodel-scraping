@@ -9,6 +9,8 @@ import {
   PuppeteerCrawler,
   RequestList,
 } from 'crawlee'
+import { parse } from 'json2csv'
+
 const _ = require('lodash')
 
 async function Apify() {
@@ -28,6 +30,7 @@ async function Apify() {
     'primeiro_dataset',
     listOfUrls.map((url) => ({ url })),
   )
+  const dataset = await Actor.openDataset('data_set_0')
 
   // Create an instance of the CheerioCrawler class - a crawler
   // that automatically loads the URLs and parses their HTML using the cheerio library.
@@ -71,7 +74,7 @@ async function Apify() {
         sexo: contact?.profile?.sex?.description || '',
       }
 
-      await Actor.pushData(filtered_data)
+      dataset.pushData(filtered_data)
     },
 
     // This function is called if the page processing failed more than maxRequestRetries+1 times.
